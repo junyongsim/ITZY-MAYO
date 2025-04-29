@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- 달력 뷰 -->
+    <CalendarView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:dateTextAppearance="?android:attr/textAppearanceMedium"
+        android:weekDayTextAppearance="?android:attr/textAppearanceSmall"
+        android:layout_marginBottom="24dp" />
+
+    <!-- 선택한 날짜의 일정 제목 입력 -->
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="일정 제목"
+        android:text="팀 미팅"
+        android:inputType="text" />
+
+    <!-- 선택한 날짜의 일정 설명 입력 -->
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="일정 설명"
+        android:text="회의실 A에서 진행 예정"
+        android:inputType="textMultiLine"
+        android:lines="3"
+        android:minLines="2"
+        android:gravity="top"
+        android:layout_marginTop="16dp" />
+
+    <!-- 저장 버튼 -->
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="저장"
+        android:layout_marginTop="24dp" />
+
+</LinearLayout>
