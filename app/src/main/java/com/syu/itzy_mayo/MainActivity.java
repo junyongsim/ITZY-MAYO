@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity
     private MainFragment fragmentMain = new MainFragment();
     private FeedFragment fragmentFeed = new FeedFragment();
     private CalendarFragment fragmentCalendar = new CalendarFragment();
+    private GoalFragment fragmentGoal = new GoalFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +76,10 @@ public class MainActivity extends AppCompatActivity
                 transaction.replace(R.id.menu_frame_layout, fragmentFeed).commitAllowingStateLoss();
             } else if (menuItem.getItemId() == R.id.nav_calander) {
                 transaction.replace(R.id.menu_frame_layout, fragmentCalendar).commitAllowingStateLoss();
+            }else if (menuItem.getItemId() == R.id.nav_goal) {
+                transaction.replace(R.id.menu_frame_layout, fragmentGoal).commitAllowingStateLoss();
             }
+
 
             return true;
         }
