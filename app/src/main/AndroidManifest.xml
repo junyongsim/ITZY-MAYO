@@ -17,6 +17,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyB7lOg75zmd89yn3JnNSkbvkgTwm_GehgI"
             />
+        <activity android:name=".MemoryGameActivity" />
+        <activity android:name=".AppleGameActivity" />
+        <activity android:name=".ComingSoonActivity" />
+        <activity android:name=".Game2048Activity" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

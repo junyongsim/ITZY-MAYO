@@ -153,6 +153,8 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+
+
     /**
      * Displays a dialog with error message explaining that the location permission is missing.
      */
