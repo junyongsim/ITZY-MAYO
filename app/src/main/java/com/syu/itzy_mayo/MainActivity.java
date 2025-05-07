@@ -1,6 +1,9 @@
 package com.syu.itzy_mayo;
 
 import android.annotation.SuppressLint;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.syu.itzy_mayo.Goal.GoalPagerFragment;
+
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -10,7 +13,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.naver.maps.map.NaverMapSdk;
 
 public class MainActivity extends AppCompatActivity
@@ -29,10 +31,13 @@ public class MainActivity extends AppCompatActivity
      * returning in {@link
      * #onRequestPermissionsResult(int, String[], int[])}.
      */
+    private boolean permissionDenied = false;
     private final FragmentManager fragmentManager = getSupportFragmentManager();
     private final MapFragment mapFragment = new MapFragment();
     private final FeedFragment feedFragment = new FeedFragment();
     private final CalendarFragment calendarFragment = new CalendarFragment();
+    private GoalPagerFragment goalPagerFragment = new GoalPagerFragment();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +66,8 @@ public class MainActivity extends AppCompatActivity
                 transaction.replace(R.id.menu_frame_layout, feedFragment).commitAllowingStateLoss();
             } else if (menuItem.getItemId() == R.id.nav_calander) {
                 transaction.replace(R.id.menu_frame_layout, calendarFragment).commitAllowingStateLoss();
+            }else if (menuItem.getItemId() == R.id.nav_goal) {
+                transaction.replace(R.id.menu_frame_layout, goalPagerFragment).commitAllowingStateLoss();
             }
 
             return true;
