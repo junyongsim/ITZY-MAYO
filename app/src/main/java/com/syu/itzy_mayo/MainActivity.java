@@ -6,9 +6,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
+import com.syu.itzy_mayo.Goal.GoalPagerFragment;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -19,7 +18,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -45,12 +43,12 @@ public class MainActivity extends AppCompatActivity
      * #onRequestPermissionsResult(int, String[], int[])}.
      */
     private boolean permissionDenied = false;
-
     private GoogleMap map;
     private FragmentManager fragmentManager = getSupportFragmentManager();
     private MainFragment fragmentMain = new MainFragment();
     private FeedFragment fragmentFeed = new FeedFragment();
     private CalendarFragment fragmentCalendar = new CalendarFragment();
+    private GoalPagerFragment fragmentGoalPager = new GoalPagerFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +73,8 @@ public class MainActivity extends AppCompatActivity
                 transaction.replace(R.id.menu_frame_layout, fragmentFeed).commitAllowingStateLoss();
             } else if (menuItem.getItemId() == R.id.nav_calander) {
                 transaction.replace(R.id.menu_frame_layout, fragmentCalendar).commitAllowingStateLoss();
+            }else if (menuItem.getItemId() == R.id.nav_goal) {
+                transaction.replace(R.id.menu_frame_layout, fragmentGoalPager).commitAllowingStateLoss();
             }
 
             return true;
