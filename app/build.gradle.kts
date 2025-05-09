@@ -4,6 +4,7 @@ import java.io.FileInputStream
 
 plugins {
     alias(libs.plugins.android.application)
+    id("com.google.gms.google-services")
 }
 
 val localProperties = Properties().apply {
@@ -28,6 +29,12 @@ android {
         // 네이버 지도 클라이언트 ID (local.properties에서 가져옴)
         buildConfigField("String", "NCP_CLIENT_ID",
             "\"${localProperties.getProperty("NCP_CLIENT_ID", "")}\""
+        )
+        buildConfigField("String", "SUPER_BASE_URL",
+        "\"${localProperties.getProperty("SUPER_BASE_URL", "")}\""
+        )
+        buildConfigField("String", "SUPER_BASE_ANON_KEY",
+        "\"${localProperties.getProperty("SUPER_BASE_ANON_KEY", "")}\""
         )
     }
 
@@ -57,6 +64,7 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation("com.naver.maps:map-sdk:3.21.0")
     implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
