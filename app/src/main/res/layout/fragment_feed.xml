@@ -30,7 +30,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:columnCount="2"
-            android:padding="8dp">
+            android:padding="8dp"
+            android:layout_gravity="center">
 
             <!-- 1. 메모리 게임 (왼쪽 위) -->
             <androidx.cardview.widget.CardView
@@ -40,7 +41,8 @@
                 android:layout_columnWeight="1"
                 android:layout_margin="8dp"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="4dp">
+                app:cardElevation="4dp"
+                android:background="@android:color/white">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -48,7 +50,8 @@
                     android:gravity="center"
                     android:text="Memory Game"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:background="@android:color/white" />
             </androidx.cardview.widget.CardView>
 
             <!-- 2. 사과 게임 (오른쪽 위) -->
@@ -59,7 +62,8 @@
                 android:layout_columnWeight="1"
                 android:layout_margin="8dp"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="4dp">
+                app:cardElevation="4dp"
+                android:background="@android:color/white">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -67,7 +71,8 @@
                     android:gravity="center"
                     android:text="Apple Game"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:background="@android:color/white" />
             </androidx.cardview.widget.CardView>
 
             <!-- 3. 기타 등등 (왼쪽 아래) -->
@@ -78,7 +83,8 @@
                 android:layout_columnWeight="1"
                 android:layout_margin="8dp"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="4dp">
+                app:cardElevation="4dp"
+                android:background="@android:color/white">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -86,7 +92,8 @@
                     android:gravity="center"
                     android:text="Coming Soon"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:background="@android:color/white" />
             </androidx.cardview.widget.CardView>
 
             <!-- 4. 2048 (오른쪽 아래) -->
@@ -97,7 +104,8 @@
                 android:layout_columnWeight="1"
                 android:layout_margin="8dp"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="4dp">
+                app:cardElevation="4dp"
+                android:background="@android:color/white">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -105,7 +113,8 @@
                     android:gravity="center"
                     android:text="2048"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:background="@android:color/white" />
             </androidx.cardview.widget.CardView>
 
         </GridLayout>
