@@ -6,48 +6,74 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.widget.GridLayout;
 import android.widget.TextView;
-import android.content.Context;
+import android.widget.FrameLayout;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import java.util.Random;
+import android.view.View;
+import android.widget.Toast;
 
 public class Game2048Activity extends AppCompatActivity {
 
     private GridLayout gridLayout;
+    private TextView gameOverText;
     private final int GRID_SIZE = 4;
     private final TextView[][] cells = new TextView[GRID_SIZE][GRID_SIZE];
     private final Random random = new Random();
-    private float startX, startY, endX, endY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_game_2048);
 
-        gridLayout = new GridLayout(this);
-        gridLayout.setColumnCount(GRID_SIZE);
-        gridLayout.setRowCount(GRID_SIZE);
+        gameOverText = findViewById(R.id.game_over_text);
+        FrameLayout innerContainer = findViewById(R.id.game_inner_container);
 
-        int cellSize = getResources().getDisplayMetrics().widthPixels / GRID_SIZE;
+        innerContainer.post(() -> {
+            int size = Math.min(innerContainer.getWidth(), innerContainer.getHeight());
+            int marginPerSide = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
+            int totalMargin = marginPerSide * 2 * GRID_SIZE;
+            int cellSize = (size - totalMargin) / GRID_SIZE;
 
-        for (int y = 0; y < GRID_SIZE; y++) {
-            for (int x = 0; x < GRID_SIZE; x++) {
-                cells[x][y] = createCell(cellSize);
-                gridLayout.addView(cells[x][y]);
+            gridLayout = new GridLayout(this);
+            gridLayout.setColumnCount(GRID_SIZE);
+            gridLayout.setRowCount(GRID_SIZE);
+            gridLayout.setLayoutParams(new FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.MATCH_PARENT));
+
+            for (int y = 0; y < GRID_SIZE; y++) {
+                for (int x = 0; x < GRID_SIZE; x++) {
+                    TextView cell = createCell(cellSize);
+                    gridLayout.addView(cell);
+                    cells[x][y] = cell;
+                }
             }
-        }
 
-        setContentView(gridLayout);
+            innerContainer.addView(gridLayout);
+            addRandomTile();
+            addRandomTile();
+        });
+    }
 
-        addRandomTile();
-        addRandomTile();
+    private void showGameOver() {
+        gameOverText.setVisibility(View.VISIBLE);
+        gameOverText.bringToFront();
+        // Force redraw
+        gameOverText.invalidate();
     }
 
     private TextView createCell(int size) {
         TextView cell = new TextView(this);
-        cell.setLayoutParams(new ViewGroup.LayoutParams(size, size));
+        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+        params.width = size;
+        params.height = size;
+        params.setMargins(4, 4, 4, 4);
+        cell.setLayoutParams(params);
         cell.setGravity(Gravity.CENTER);
         cell.setTypeface(Typeface.DEFAULT_BOLD);
         cell.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
@@ -59,18 +85,12 @@ public class Game2048Activity extends AppCompatActivity {
         for (int y = 0; y < GRID_SIZE; y++) {
             for (int x = 0; x < GRID_SIZE; x++) {
                 String current = cells[x][y].getText().toString();
-                if (!current.isEmpty()) {
-                    int value = Integer.parseInt(current);
-
-                    // Right Check
-                    if (x + 1 < GRID_SIZE && value == getValueAt(x + 1, y)) {
-                        return true;
-                    }
-                    // Down Check
-                    if (y + 1 < GRID_SIZE && value == getValueAt(x, y + 1)) {
-                        return true;
-                    }
-                }
+                if (current.isEmpty()) return true;
+                int value = Integer.parseInt(current);
+                if (x + 1 < GRID_SIZE && value == getValueAt(x + 1, y)) return true;
+                if (x - 1 >= 0 && value == getValueAt(x - 1, y)) return true;
+                if (y + 1 < GRID_SIZE && value == getValueAt(x, y + 1)) return true;
+                if (y - 1 >= 0 && value == getValueAt(x, y - 1)) return true;
             }
         }
         return false;
@@ -80,10 +100,19 @@ public class Game2048Activity extends AppCompatActivity {
         String text = cells[x][y].getText().toString();
         return text.isEmpty() ? 0 : Integer.parseInt(text);
     }
+    private boolean isBoardFull() {
+        for (int x = 0; x < GRID_SIZE; x++) {
+            for (int y = 0; y < GRID_SIZE; y++) {
+                if (cells[x][y].getText().toString().isEmpty()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     private void addRandomTile() {
         boolean isFull = true;
-
-        // 먼저 빈 칸이 있는지 체크
         for (int x = 0; x < GRID_SIZE; x++) {
             for (int y = 0; y < GRID_SIZE; y++) {
                 if (cells[x][y].getText().toString().isEmpty()) {
@@ -94,17 +123,12 @@ public class Game2048Activity extends AppCompatActivity {
 
         if (isFull) {
             if (!canMove()) {
-                // 만약 이동할 수 없다면, 게임 오버
-                // 예를 들어 Dialog를 띄우거나 Toast를 띄워서 알림
-                // finish(); // 또는 Activity 종료
-                System.out.println("Game Over");
+                showGameOver();
                 return;
-            } else {
-                return; // 이동은 가능하지만 빈 공간이 없으면 추가 안 함
             }
+            return;
         }
 
-        // 빈 공간이 있는 경우에만 타일 추가
         int x, y;
         do {
             x = random.nextInt(GRID_SIZE);
@@ -134,121 +158,167 @@ public class Game2048Activity extends AppCompatActivity {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        return false; // 터치 이벤트 막음
+        return false;
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        boolean moved = false;
+
         switch (keyCode) {
             case KeyEvent.KEYCODE_DPAD_LEFT:
-                swipeLeft();
+                moved = swipeLeft();
                 break;
             case KeyEvent.KEYCODE_DPAD_RIGHT:
-                swipeRight();
+                moved = swipeRight();
                 break;
             case KeyEvent.KEYCODE_DPAD_UP:
-                swipeUp();
+                moved = swipeUp();
                 break;
             case KeyEvent.KEYCODE_DPAD_DOWN:
-                swipeDown();
+                moved = swipeDown();
                 break;
             default:
                 return super.onKeyDown(keyCode, event);
         }
-        addRandomTile();
+
+        if (moved) {
+            addRandomTile();
+        }
+
+        // Always check game over regardless of move
+        if (isBoardFull() && !canMove()) {
+            new android.os.Handler().postDelayed(this::showGameOver, 100);
+        }
+
         return true;
     }
 
-
-    private void swipeLeft() {
+    private boolean swipeLeft() {
+        boolean moved = false;
         for (int y = 0; y < GRID_SIZE; y++) {
-            int index = 0;
             int[] newRow = new int[GRID_SIZE];
+            boolean[] merged = new boolean[GRID_SIZE];
+            int index = 0;
 
             for (int x = 0; x < GRID_SIZE; x++) {
-                if (!cells[x][y].getText().toString().isEmpty()) {
-                    int value = Integer.parseInt(cells[x][y].getText().toString());
-                    if (index > 0 && newRow[index - 1] == value) {
+                String cellText = cells[x][y].getText().toString();
+                if (!cellText.isEmpty()) {
+                    int value = Integer.parseInt(cellText);
+                    if (index > 0 && newRow[index - 1] == value && !merged[index - 1]) {
                         newRow[index - 1] *= 2;
+                        merged[index - 1] = true;
+                        moved = true;
                     } else {
+                        if (newRow[index] != 0) moved = true;
                         newRow[index++] = value;
                     }
                 }
             }
 
             for (int x = 0; x < GRID_SIZE; x++) {
-                cells[x][y].setText(newRow[x] == 0 ? "" : String.valueOf(newRow[x]));
+                String newValue = newRow[x] == 0 ? "" : String.valueOf(newRow[x]);
+                if (!cells[x][y].getText().toString().equals(newValue)) moved = true;
+                cells[x][y].setText(newValue);
                 updateCellColor(cells[x][y]);
             }
         }
+        return moved;
     }
 
-    private void swipeRight() {
+    private boolean swipeRight() {
+        boolean moved = false;
         for (int y = 0; y < GRID_SIZE; y++) {
-            int index = GRID_SIZE - 1;
             int[] newRow = new int[GRID_SIZE];
+            boolean[] merged = new boolean[GRID_SIZE];
+            int index = GRID_SIZE - 1;
 
             for (int x = GRID_SIZE - 1; x >= 0; x--) {
-                if (!cells[x][y].getText().toString().isEmpty()) {
-                    int value = Integer.parseInt(cells[x][y].getText().toString());
-                    if (index < GRID_SIZE - 1 && newRow[index + 1] == value) {
+                String cellText = cells[x][y].getText().toString();
+                if (!cellText.isEmpty()) {
+                    int value = Integer.parseInt(cellText);
+                    if (index < GRID_SIZE - 1 && newRow[index + 1] == value && !merged[index + 1]) {
                         newRow[index + 1] *= 2;
+                        merged[index + 1] = true;
+                        moved = true;
                     } else {
+                        if (newRow[index] != 0) moved = true;
                         newRow[index--] = value;
                     }
                 }
             }
 
             for (int x = 0; x < GRID_SIZE; x++) {
-                cells[x][y].setText(newRow[x] == 0 ? "" : String.valueOf(newRow[x]));
+                String newValue = newRow[x] == 0 ? "" : String.valueOf(newRow[x]);
+                if (!cells[x][y].getText().toString().equals(newValue)) moved = true;
+                cells[x][y].setText(newValue);
                 updateCellColor(cells[x][y]);
             }
         }
+        return moved;
     }
 
-    private void swipeUp() {
+    private boolean swipeUp() {
+        boolean moved = false;
         for (int x = 0; x < GRID_SIZE; x++) {
+            int[] newCol = new int[GRID_SIZE];
+            boolean[] merged = new boolean[GRID_SIZE];
             int index = 0;
-            int[] newColumn = new int[GRID_SIZE];
 
             for (int y = 0; y < GRID_SIZE; y++) {
-                if (!cells[x][y].getText().toString().isEmpty()) {
-                    int value = Integer.parseInt(cells[x][y].getText().toString());
-                    if (index > 0 && newColumn[index - 1] == value) {
-                        newColumn[index - 1] *= 2;
+                String cellText = cells[x][y].getText().toString();
+                if (!cellText.isEmpty()) {
+                    int value = Integer.parseInt(cellText);
+                    if (index > 0 && newCol[index - 1] == value && !merged[index - 1]) {
+                        newCol[index - 1] *= 2;
+                        merged[index - 1] = true;
+                        moved = true;
                     } else {
-                        newColumn[index++] = value;
+                        if (newCol[index] != 0) moved = true;
+                        newCol[index++] = value;
                     }
                 }
             }
 
             for (int y = 0; y < GRID_SIZE; y++) {
-                cells[x][y].setText(newColumn[y] == 0 ? "" : String.valueOf(newColumn[y]));
+                String newValue = newCol[y] == 0 ? "" : String.valueOf(newCol[y]);
+                if (!cells[x][y].getText().toString().equals(newValue)) moved = true;
+                cells[x][y].setText(newValue);
                 updateCellColor(cells[x][y]);
             }
         }
+        return moved;
     }
 
-    private void swipeDown() {
+    private boolean swipeDown() {
+        boolean moved = false;
         for (int x = 0; x < GRID_SIZE; x++) {
+            int[] newCol = new int[GRID_SIZE];
+            boolean[] merged = new boolean[GRID_SIZE];
             int index = GRID_SIZE - 1;
-            int[] newColumn = new int[GRID_SIZE];
 
             for (int y = GRID_SIZE - 1; y >= 0; y--) {
-                if (!cells[x][y].getText().toString().isEmpty()) {
-                    int value = Integer.parseInt(cells[x][y].getText().toString());
-                    if (index < GRID_SIZE - 1 && newColumn[index + 1] == value) {
-                        newColumn[index + 1] *= 2;
+                String cellText = cells[x][y].getText().toString();
+                if (!cellText.isEmpty()) {
+                    int value = Integer.parseInt(cellText);
+                    if (index < GRID_SIZE - 1 && newCol[index + 1] == value && !merged[index + 1]) {
+                        newCol[index + 1] *= 2;
+                        merged[index + 1] = true;
+                        moved = true;
                     } else {
-                        newColumn[index--] = value;
+                        if (newCol[index] != 0) moved = true;
+                        newCol[index--] = value;
                     }
                 }
             }
 
             for (int y = 0; y < GRID_SIZE; y++) {
-                cells[x][y].setText(newColumn[y] == 0 ? "" : String.valueOf(newColumn[y]));
+                String newValue = newCol[y] == 0 ? "" : String.valueOf(newCol[y]);
+                if (!cells[x][y].getText().toString().equals(newValue)) moved = true;
+                cells[x][y].setText(newValue);
                 updateCellColor(cells[x][y]);
             }
         }
+        return moved;
     }
 }
