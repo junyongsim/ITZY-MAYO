@@ -27,6 +27,8 @@ public class Game2048Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_2048);
 
+        findViewById(R.id.btn_back).setOnClickListener(v -> finish());// 🔙 뒤로가기 버튼 이벤트 연결
+
         gameOverText = findViewById(R.id.game_over_text);
         FrameLayout innerContainer = findViewById(R.id.game_inner_container);
 
@@ -93,6 +95,9 @@ public class Game2048Activity extends AppCompatActivity {
         }
         return false;
     }
+    private boolean cannotMove() {
+        return !canMove();
+    }
 
     private int getValueAt(int x, int y) {
         String text = cells[x][y].getText().toString();
@@ -120,7 +125,7 @@ public class Game2048Activity extends AppCompatActivity {
         }
 
         if (isFull) {
-            if (!canMove()) {
+            if (cannotMove()) {
                 showGameOver();
                 return;
             }
@@ -185,7 +190,7 @@ public class Game2048Activity extends AppCompatActivity {
         }
 
         // Always check game over regardless of move
-        if (isBoardFull() && !canMove()) {
+        if (isBoardFull() && cannotMove()) {
             new android.os.Handler().postDelayed(this::showGameOver, 100);
         }
 
