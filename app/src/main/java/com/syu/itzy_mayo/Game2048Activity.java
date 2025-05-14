@@ -11,10 +11,8 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.ViewGroup;
 import java.util.Random;
 import android.view.View;
-import android.widget.Toast;
 
 public class Game2048Activity extends AppCompatActivity {
 
@@ -163,7 +161,7 @@ public class Game2048Activity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        boolean moved = false;
+        boolean moved;
 
         switch (keyCode) {
             case KeyEvent.KEYCODE_DPAD_LEFT:
