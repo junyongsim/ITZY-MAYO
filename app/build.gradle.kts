@@ -65,6 +65,11 @@ dependencies {
     implementation("com.naver.maps:map-sdk:3.21.0")
     implementation("com.google.android.gms:play-services-location:21.0.1")
     implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
+    implementation("com.google.firebase:firebase-auth:22.3.0")
+    
+    // Navigation Component (추가)
+    implementation("androidx.navigation:navigation-fragment:2.7.7")
+    implementation("androidx.navigation:navigation-ui:2.7.7")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
