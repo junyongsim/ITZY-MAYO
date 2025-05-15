@@ -33,7 +33,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;
     private FusedLocationSource locationSource;
     private NaverMap naverMap;
-    private boolean permissionDenied = false;
     private FusedLocationProviderClient fusedLocationClient;
 
     public MapFragment() {
@@ -118,7 +117,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         marker.setMap(naverMap);
 
         // 지도 이동 (필요시)
-        // naverMap.moveCamera(CameraUpdate.scrollTo(seoulCityHall));
+        naverMap.moveCamera(CameraUpdate.scrollTo(seoulCityHall));
     }
 
     private void showCurrentLocation() {
@@ -173,7 +172,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         if (locationSource.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
             if (!locationSource.isActivated()) {
                 naverMap.setLocationTrackingMode(LocationTrackingMode.None);
-                permissionDenied = true;
             } else {
                 naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
             }

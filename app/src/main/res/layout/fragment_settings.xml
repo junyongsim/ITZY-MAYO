@@ -13,6 +13,100 @@
         android:textStyle="bold"
         android:layout_marginBottom="16dp"/>
 
+    <!-- 로그인 섹션 -->
+    <LinearLayout
+        android:id="@+id/login_section"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#F5F5F5"
+        android:padding="16dp"
+        android:layout_marginBottom="16dp">
+
+        <!-- 비로그인 상태 뷰 -->
+        <LinearLayout
+            android:id="@+id/not_logged_in_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="로그인하여 모든 기능을 이용하세요"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp"/>
+
+
+            <EditText
+                android:id="@+id/email_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="이메일"
+                android:inputType="textEmailAddress" />
+
+            <EditText
+                android:id="@+id/password_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="비밀번호"
+                android:inputType="textPassword" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+
+                <Button
+                    android:id="@+id/login_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="로그인"
+                    android:layout_marginEnd="4dp"/>
+
+                <Button
+                    android:id="@+id/register_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="회원가입"
+                    android:layout_marginStart="4dp"/>
+            </LinearLayout>
+            <Button
+                android:id="@+id/github_login_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Github" />
+        </LinearLayout>
+
+        <!-- 로그인 상태 뷰 -->
+        <LinearLayout
+            android:id="@+id/logged_in_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/user_email"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="16sp"/>
+
+            <Button
+                android:id="@+id/logout_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="로그아웃"/>
+        </LinearLayout>
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
