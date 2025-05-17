@@ -21,12 +21,12 @@ android {
     defaultConfig {
         applicationId = "com.syu.itzy_mayo"
         minSdk = 24
+        //noinspection OldTargetApi
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         
-        // 네이버 지도 클라이언트 ID (local.properties에서 가져옴)
         buildConfigField("String", "NCP_CLIENT_ID",
             "\"${localProperties.getProperty("NCP_CLIENT_ID", "")}\""
         )
@@ -62,14 +62,15 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
-    implementation("com.naver.maps:map-sdk:3.21.0")
-    implementation("com.google.android.gms:play-services-location:21.0.1")
-    implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
-    implementation("com.google.firebase:firebase-auth:22.3.0")
+    implementation(libs.navermapsdk)
+    implementation(libs.play.services.location)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
     
     // Navigation Component (추가)
-    implementation("androidx.navigation:navigation-fragment:2.7.7")
-    implementation("androidx.navigation:navigation-ui:2.7.7")
+    implementation(libs.navigation.fragment)
+    implementation(libs.navigation.ui)
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

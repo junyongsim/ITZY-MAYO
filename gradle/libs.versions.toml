@@ -1,5 +1,6 @@
 [versions]
-agp = "8.9.0"
+#noinspection GradleDependency
+agp = "8.2.2"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
@@ -7,6 +8,12 @@ appcompat = "1.7.0"
 material = "1.12.0"
 activity = "1.10.1"
 constraintlayout = "2.2.1"
+navermapsdk = "3.21.0"
+playServicesLocation = "21.3.0"
+firebaseBom = "33.13.0"
+firbaseAuth = "23.2.0"
+navigationFragment = "2.9.0"
+navigationUI = "2.9.0"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -16,6 +23,14 @@ appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "a
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+navermapsdk = { group = "com.naver.maps", name = "map-sdk", version.ref = "navermapsdk"}
+play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation"}
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom"}
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firbaseAuth"}
+navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigationFragment"}
+navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigationUI"}
+
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
